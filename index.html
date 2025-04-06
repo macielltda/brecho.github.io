@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brechó - Itens à Venda</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #FF6B6B;
@@ -56,6 +57,29 @@
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .zoom-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: var(--primary-color);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .item-card:hover .zoom-button {
+            opacity: 1;
         }
 
         .item-card:hover {
@@ -66,6 +90,11 @@
             width: 100%;
             height: 250px;
             object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .item-card:hover .item-image {
+            transform: scale(1.1);
         }
 
         .item-info {
@@ -89,6 +118,290 @@
             color: #666;
             margin-top: 0.5rem;
         }
+
+        /* Estilos do Carrinho */
+        .cart-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            z-index: 1001;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .cart-modal.active {
+            display: block;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .close-cart {
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--text-color);
+        }
+
+        .cart-items {
+            margin-bottom: 20px;
+            max-height: calc(100vh - 250px);
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 15px;
+            border-radius: 5px;
+        }
+
+        .cart-item-info {
+            flex-grow: 1;
+        }
+
+        .cart-item-title {
+            font-size: 16px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .cart-item-price {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .quantity-btn {
+            background-color: var(--background-color);
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text-color);
+        }
+
+        .quantity-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .quantity {
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .remove-item {
+            color: #ff0000;
+            cursor: pointer;
+            padding: 5px;
+            margin-left: 10px;
+        }
+
+        .cart-footer {
+            position: sticky;
+            bottom: 0;
+            background-color: white;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .cart-total {
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cart-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .continue-shopping {
+            flex: 1;
+            padding: 15px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .continue-shopping:hover {
+            background-color: #e9ecef;
+        }
+
+        .checkout-button {
+            flex: 2;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkout-button:hover {
+            background-color: #ff5252;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .empty-cart i {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        /* Estilos do Formulário de Contato */
+        .contact-form {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--background-color);
+            border-radius: 5px;
+        }
+
+        .contact-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .whatsapp-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #25D366;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .whatsapp-button:hover {
+            background-color: #128C7E;
+        }
+
+        .whatsapp-button i {
+            font-size: 20px;
+        }
+
+        .back-to-cart {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-to-cart:hover {
+            background-color: #e9ecef;
+        }
     </style>
 </head>
 <body>
@@ -97,15 +410,62 @@
         <p>Encontre peças únicas e especiais!</p>
     </header>
 
+    <div class="cart-icon">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count">0</span>
+    </div>
+
+    <div class="cart-modal">
+        <div class="cart-header">
+            <h2>Seu Carrinho</h2>
+            <span class="close-cart">&times;</span>
+        </div>
+        <div class="cart-items">
+            <!-- Items will be added here dynamically -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span>R$ <span id="cart-total">0,00</span></span>
+            </div>
+            <div class="cart-buttons">
+                <button class="continue-shopping">Continuar Comprando</button>
+                <button class="checkout-button">Finalizar Compra</button>
+            </div>
+        </div>
+        <div class="contact-form">
+            <div class="form-group">
+                <label for="customer-name">Nome Completo</label>
+                <input type="text" id="customer-name" required placeholder="Digite seu nome completo">
+            </div>
+            <div class="form-group">
+                <label for="customer-phone">Telefone</label>
+                <input type="tel" id="customer-phone" required placeholder="(00) 00000-0000">
+            </div>
+            <div class="form-group">
+                <label for="customer-address">Endereço para Entrega</label>
+                <input type="text" id="customer-address" required placeholder="Digite seu endereço completo">
+            </div>
+            <button class="whatsapp-button">
+                <i class="fab fa-whatsapp"></i>
+                Enviar para WhatsApp
+            </button>
+            <button class="back-to-cart">Voltar ao Carrinho</button>
+        </div>
+    </div>
+
     <div class="container">
         <div class="items-grid">
             <!-- Item 1 -->
             <div class="item-card">
                 <img src="https://drive.google.com/thumbnail?id=1iFOZdXEgiK5BgsvY6GTsKNxzjt4FZJns" alt="Item 1" class="item-image">
+                <div class="zoom-button">+</div>
                 <div class="item-info">
-                    <h3 class="item-title">Vestido Floral</h3>
-                    <p class="item-price">R$ 89,90</p>
-                    <p class="item-description">Vestido floral em ótimo estado, tamanho M</p>
+                    <h3 class="item-title">Short Casual Plus</h3>
+                    <p class="item-price">R$ 25,00</p>
+                    <button class="add-to-cart" data-id="1" data-title="Short Casual Plus" data-price="25.00" data-image="https://drive.google.com/thumbnail?id=1iFOZdXEgiK5BgsvY6GTsKNxzjt4FZJns">
+                        Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
 
@@ -116,6 +476,9 @@
                     <h3 class="item-title">Calça Jeans</h3>
                     <p class="item-price">R$ 59,90</p>
                     <p class="item-description">Calça jeans skinny, tamanho 38</p>
+                    <button class="add-to-cart" data-id="2" data-title="Calça Jeans" data-price="59.90" data-image="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI">
+                        Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
 
@@ -126,6 +489,9 @@
                     <h3 class="item-title">Blazer</h3>
                     <p class="item-price">R$ 129,90</p>
                     <p class="item-description">Blazer preto elegante, tamanho P</p>
+                    <button class="add-to-cart" data-id="3" data-title="Blazer" data-price="129.90" data-image="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI">
+                        Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
 
@@ -136,6 +502,9 @@
                     <h3 class="item-title">Camisa Social</h3>
                     <p class="item-price">R$ 45,90</p>
                     <p class="item-description">Camisa social branca, tamanho G</p>
+                    <button class="add-to-cart" data-id="4" data-title="Camisa Social" data-price="45.90" data-image="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI">
+                        Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
 
@@ -146,6 +515,9 @@
                     <h3 class="item-title">Saia Midi</h3>
                     <p class="item-price">R$ 69,90</p>
                     <p class="item-description">Saia midi preta, tamanho M</p>
+                    <button class="add-to-cart" data-id="5" data-title="Saia Midi" data-price="69.90" data-image="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI">
+                        Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
 
@@ -156,6 +528,9 @@
                     <h3 class="item-title">Tênis Casual</h3>
                     <p class="item-price">R$ 79,90</p>
                     <p class="item-description">Tênis casual branco, número 37</p>
+                    <button class="add-to-cart" data-id="6" data-title="Tênis Casual" data-price="79.90" data-image="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI">
+                        Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
 
@@ -166,6 +541,9 @@
                     <h3 class="item-title">Bolsa de Couro</h3>
                     <p class="item-price">R$ 159,90</p>
                     <p class="item-description">Bolsa de couro legítimo, marrom</p>
+                    <button class="add-to-cart" data-id="7" data-title="Bolsa de Couro" data-price="159.90" data-image="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI">
+                        Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
 
@@ -176,6 +554,9 @@
                     <h3 class="item-title">Jaqueta Jeans</h3>
                     <p class="item-price">R$ 99,90</p>
                     <p class="item-description">Jaqueta jeans azul, tamanho G</p>
+                    <button class="add-to-cart" data-id="8" data-title="Jaqueta Jeans" data-price="99.90" data-image="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI">
+                        Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
 
@@ -186,6 +567,9 @@
                     <h3 class="item-title">Blusa Tricot</h3>
                     <p class="item-price">R$ 49,90</p>
                     <p class="item-description">Blusa tricot bege, tamanho M</p>
+                    <button class="add-to-cart" data-id="9" data-title="Blusa Tricot" data-price="49.90" data-image="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI">
+                        Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
 
@@ -196,9 +580,244 @@
                     <h3 class="item-title">Short Jeans</h3>
                     <p class="item-price">R$ 55,90</p>
                     <p class="item-description">Short jeans azul, tamanho 36</p>
+                    <button class="add-to-cart" data-id="10" data-title="Short Jeans" data-price="55.90" data-image="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI">
+                        Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        let cart = [];
+        const cartIcon = document.querySelector('.cart-icon');
+        const cartModal = document.querySelector('.cart-modal');
+        const closeCart = document.querySelector('.close-cart');
+        const cartItems = document.querySelector('.cart-items');
+        const cartCount = document.querySelector('.cart-count');
+        const cartTotal = document.getElementById('cart-total');
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        const continueShoppingBtn = document.querySelector('.continue-shopping');
+        const checkoutButton = document.querySelector('.checkout-button');
+        const contactForm = document.querySelector('.contact-form');
+        const backToCartBtn = document.querySelector('.back-to-cart');
+        const whatsappButton = document.querySelector('.whatsapp-button');
+
+        // Abrir/Fechar carrinho
+        cartIcon.addEventListener('click', () => {
+            cartModal.classList.add('active');
+        });
+
+        closeCart.addEventListener('click', () => {
+            cartModal.classList.remove('active');
+            contactForm.classList.remove('active');
+        });
+
+        continueShoppingBtn.addEventListener('click', () => {
+            cartModal.classList.remove('active');
+        });
+
+        // Mostrar formulário de contato
+        checkoutButton.addEventListener('click', () => {
+            if (cart.length === 0) {
+                showNotification('Seu carrinho está vazio!');
+                return;
+            }
+            contactForm.classList.add('active');
+        });
+
+        // Voltar ao carrinho
+        backToCartBtn.addEventListener('click', () => {
+            contactForm.classList.remove('active');
+        });
+
+        // Enviar para WhatsApp
+        whatsappButton.addEventListener('click', () => {
+            const name = document.getElementById('customer-name').value;
+            const phone = document.getElementById('customer-phone').value;
+            const address = document.getElementById('customer-address').value;
+
+            if (!name || !phone || !address) {
+                showNotification('Por favor, preencha todos os campos!');
+                return;
+            }
+
+            let message = `*Novo Pedido*\n\n`;
+            message += `*Cliente:* ${name}\n`;
+            message += `*Telefone:* ${phone}\n`;
+            message += `*Endereço:* ${address}\n\n`;
+            message += `*Itens do Pedido:*\n`;
+
+            cart.forEach(item => {
+                message += `- ${item.title} (${item.quantity}x) - R$ ${(item.price * item.quantity).toFixed(2)}\n`;
+            });
+
+            message += `\n*Total:* R$ ${cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}`;
+
+            const whatsappUrl = `https://wa.me/5531996519655?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+
+            // Limpar carrinho e formulário
+            cart = [];
+            document.getElementById('customer-name').value = '';
+            document.getElementById('customer-phone').value = '';
+            document.getElementById('customer-address').value = '';
+            contactForm.classList.remove('active');
+            updateCart();
+            showNotification('Pedido enviado com sucesso!');
+        });
+
+        // Máscara para telefone
+        document.getElementById('customer-phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            
+            if (value.length > 2) {
+                value = `(${value.slice(0,2)}) ${value.slice(2)}`;
+            }
+            if (value.length > 9) {
+                value = `${value.slice(0,9)}-${value.slice(9)}`;
+            }
+            
+            e.target.value = value;
+        });
+
+        // Adicionar item ao carrinho
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const id = button.dataset.id;
+                const title = button.dataset.title;
+                const price = parseFloat(button.dataset.price);
+                const image = button.dataset.image;
+
+                // Verificar se o item já existe no carrinho
+                const existingItem = cart.find(item => item.id === id);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        id,
+                        title,
+                        price,
+                        image,
+                        quantity: 1
+                    });
+                }
+
+                updateCart();
+                showNotification('Item adicionado ao carrinho!');
+            });
+        });
+
+        // Atualizar carrinho
+        function updateCart() {
+            cartItems.innerHTML = '';
+            let total = 0;
+            let totalItems = 0;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Seu carrinho está vazio</p>
+                    </div>
+                `;
+                cartCount.textContent = '0';
+                cartTotal.textContent = '0,00';
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                total += item.price * item.quantity;
+                totalItems += item.quantity;
+                cartItems.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.title}">
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">${item.title}</div>
+                            <div class="cart-item-price">R$ ${(item.price * item.quantity).toFixed(2)}</div>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn decrease" data-index="${index}">-</button>
+                                <span class="quantity">${item.quantity}</span>
+                                <button class="quantity-btn increase" data-index="${index}">+</button>
+                            </div>
+                        </div>
+                        <div class="remove-item" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </div>
+                    </div>
+                `;
+            });
+
+            cartCount.textContent = totalItems;
+            cartTotal.textContent = total.toFixed(2);
+
+            // Adicionar eventos de quantidade
+            document.querySelectorAll('.quantity-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const index = button.dataset.index;
+                    if (button.classList.contains('decrease')) {
+                        if (cart[index].quantity > 1) {
+                            cart[index].quantity -= 1;
+                        } else {
+                            cart.splice(index, 1);
+                        }
+                    } else {
+                        cart[index].quantity += 1;
+                    }
+                    updateCart();
+                });
+            });
+
+            // Adicionar eventos de remoção
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', () => {
+                    const index = button.dataset.index;
+                    cart.splice(index, 1);
+                    updateCart();
+                    showNotification('Item removido do carrinho!');
+                });
+            });
+        }
+
+        // Notificação
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: var(--primary-color);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 5px;
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Adicionar estilos de animação
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html> 
