@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brechó - Itens à Venda</title>
+    <style>
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --background-color: #f8f9fa;
+            --text-color: #2d3436;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .item-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .item-info {
+            padding: 1rem;
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .item-price {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .item-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Brechó - Itens à Venda</h1>
+        <p>Encontre peças únicas e especiais!</p>
+    </header>
+
+    <div class="container">
+        <div class="items-grid">
+            <!-- Item 1 -->
+            <div class="item-card">
+                <img src="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI" alt="Item 1" class="item-image">
+                <div class="item-info">
+                    <h3 class="item-title">Vestido Floral</h3>
+                    <p class="item-price">R$ 89,90</p>
+                    <p class="item-description">Vestido floral em ótimo estado, tamanho M</p>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="item-card">
+                <img src="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI" alt="Item 2" class="item-image">
+                <div class="item-info">
+                    <h3 class="item-title">Calça Jeans</h3>
+                    <p class="item-price">R$ 59,90</p>
+                    <p class="item-description">Calça jeans skinny, tamanho 38</p>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="item-card">
+                <img src="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI" alt="Item 3" class="item-image">
+                <div class="item-info">
+                    <h3 class="item-title">Blazer</h3>
+                    <p class="item-price">R$ 129,90</p>
+                    <p class="item-description">Blazer preto elegante, tamanho P</p>
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="item-card">
+                <img src="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI" alt="Item 4" class="item-image">
+                <div class="item-info">
+                    <h3 class="item-title">Camisa Social</h3>
+                    <p class="item-price">R$ 45,90</p>
+                    <p class="item-description">Camisa social branca, tamanho G</p>
+                </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="item-card">
+                <img src="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI" alt="Item 5" class="item-image">
+                <div class="item-info">
+                    <h3 class="item-title">Saia Midi</h3>
+                    <p class="item-price">R$ 69,90</p>
+                    <p class="item-description">Saia midi preta, tamanho M</p>
+                </div>
+            </div>
+
+            <!-- Item 6 -->
+            <div class="item-card">
+                <img src="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI" alt="Item 6" class="item-image">
+                <div class="item-info">
+                    <h3 class="item-title">Tênis Casual</h3>
+                    <p class="item-price">R$ 79,90</p>
+                    <p class="item-description">Tênis casual branco, número 37</p>
+                </div>
+            </div>
+
+            <!-- Item 7 -->
+            <div class="item-card">
+                <img src="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI" alt="Item 7" class="item-image">
+                <div class="item-info">
+                    <h3 class="item-title">Bolsa de Couro</h3>
+                    <p class="item-price">R$ 159,90</p>
+                    <p class="item-description">Bolsa de couro legítimo, marrom</p>
+                </div>
+            </div>
+
+            <!-- Item 8 -->
+            <div class="item-card">
+                <img src="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI" alt="Item 8" class="item-image">
+                <div class="item-info">
+                    <h3 class="item-title">Jaqueta Jeans</h3>
+                    <p class="item-price">R$ 99,90</p>
+                    <p class="item-description">Jaqueta jeans azul, tamanho G</p>
+                </div>
+            </div>
+
+            <!-- Item 9 -->
+            <div class="item-card">
+                <img src="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI" alt="Item 9" class="item-image">
+                <div class="item-info">
+                    <h3 class="item-title">Blusa Tricot</h3>
+                    <p class="item-price">R$ 49,90</p>
+                    <p class="item-description">Blusa tricot bege, tamanho M</p>
+                </div>
+            </div>
+
+            <!-- Item 10 -->
+            <div class="item-card">
+                <img src="https://drive.google.com/uc?export=view&id=SEU_ID_AQUI" alt="Item 10" class="item-image">
+                <div class="item-info">
+                    <h3 class="item-title">Short Jeans</h3>
+                    <p class="item-price">R$ 55,90</p>
+                    <p class="item-description">Short jeans azul, tamanho 36</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
